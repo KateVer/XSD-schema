@@ -1,101 +1,102 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://epam.by/XMLSchemaTest"
+        xmlns:tns="http://epam.by/XMLSchemaTest">
 
 	<!-- definition of simple elements -->
-	<xs:element name="display-name" type="xs:string"/>
-	<xs:element name="welcome-file" type="xs:string"/>
-	<xs:element name="filter-name" type="xs:string"/>
-	<xs:element name="filter-class" type="xs:string"/>
-	<xs:element name="url-pattern" type="xs:string"/>
-	<xs:element name="dispather" type="xs:string"/>
-	<xs:element name="listener-class" type="xs:string"/>
-	<xs:element name="servlet-name" type="xs:string"/>
-	<xs:element name="servlet-class" type="xs:string"/>
-	<xs:element name="servlet-name" type="xs:string"/>
-	<xs:element name="error-code" type="xs:positiveInteger"/>
-	<xs:element name="location" type="xs:string"/>
-	<xs:element name=«param name» type=«xs:string»/>
-	<xs:element name=«param value» type=«xs:string»/>
+	<element name="display-name" type=«tns:string"/>
+	<element name="welcome-file" type=«tns:string"/>
+	<element name="filter-name" type=«tns:string"/>
+	<element name="filter-class" type=«tns:string"/>
+	<element name="url-pattern" type=«tns:string"/>
+	<element name="dispather" type=«tns:string"/>
+	<element name="listener-class" type=«tns:string"/>
+	<element name="servlet-name" type=«tns:string"/>
+	<element name="servlet-class" type=«tns:string"/>
+	<element name="servlet-name" type=«tns:string"/>
+	<element name="error-code" type=«tns:positiveInteger"/>
+	<element name="location" type=«tns:string"/>
+	<element name=«param name» type=«tns:string»/>
+	<element name=«param value» type=«tns:string»/>
 
 	<!-- definition of attributes -->
-	<xs:attribute name="id" type="xs:string"/>
-	<xs:attribute name="version" type="xs:string"/>
+	<attribute name="id" type="string"/>
+	<attribute name="version" type="string"/>
 
 	<!-- definition of complex elements -->
-	<xs:element name="welcome-file-list">
-	  <xs:element ref="welcome-file"/>
-	</xs:element>
+	<element name="welcome-file-list">
+	  <element ref="welcome-file"/>
+	</element>
 
-	<xs:element name="filter">
-	  <xs:complexType>
+	<element name="filter">
+	  <complexType>
 
-	    <xs:sequence>
-	     <xs:element ref="filter-name"/>
-	     <xs:element ref="filter-class"/>
-             <xs:element name="init-param" type="InitParam" minOccurs="0" maxOccurs="unbounded"/>
-	    </xs:sequence>
-	  </xs:complexType>
-	  <xs:element ref="init-param" maxOccurs="unbounded"/>
-	</xs:element>
+	    <sequence>
+	     <element ref="filter-name"/>
+	     <element ref="filter-class"/>
+             <element ref="init-param" type=«tns:InitParam» minOccurs="0" maxOccurs="unbounded"/>
+	    </sequence>
+	  </complexType>
+	  
+	</element>
 
-	<xs:element name="filter-mapping">
-	  <xs:complexType>
-	    <xs:sequence>
-	      <xs:element ref="filter-name"/>
-	      <xs:element ref="url-pattern"/>
-	      <xs:element ref="dispather"/>
-	    </xs:sequence>
-	  </xs:complexType>
-	</xs:element>
+	<element name="filter-mapping">
+	  <complexType>
+	    <sequence>
+	      <element ref="filter-name"/>
+	      <element ref="url-pattern"/>
+	      <element ref="dispather"/>
+	    </sequence>
+	  </complexType>
+	</element>
 
-	<xs:element name="listener">
-	      <xs:element ref="listener-class"/>
-	</xs:element>
+	<element name="listener">
+	      <element ref="listener-class"/>
+	</element>
 
-	<xs:element name="servlet">
-	  <xs:complexType>
-	    <xs:sequence>
-	     <xs:element ref="servlet-name"/>
-	     <xs:element ref="servlet-class"/>
-	     <xs:element name="init-param" type="InitParam" minOccurs="0" maxOccurs="unbounded"/>
+	<element name="servlet">
+	  <complexType>
+	    <sequence>
+	     <element ref="servlet-name"/>
+	     <element ref="servlet-class"/>
+	     <element ref="init-param" type=«tns:InitParam» minOccurs="0" maxOccurs="unbounded"/>
 
-	    </xs:sequence>
-	  </xs:complexType>
-	  <xs:element ref="init-param" maxOccurs="unbounded"/>
-	</xs:element>
+	    </sequence>
+	  </complexType>
 
-	<xs:element name="servlet-mapping">
-	  <xs:complexType>
-	    <xs:sequence>
-	      <xs:element ref="servlet-name"/>
-	      <xs:element ref="url-pattern"/>
-	    </xs:sequence>
-	  </xs:complexType>
-	</xs:element>
+	</element>
 
-	<xs:element name="error-page">
-	  <xs:complexType>
-	    <xs:sequence>
-	      <xs:element ref="error-code"/>
-	      <xs:element ref="location"/>
-	    </xs:sequence>
-	  </xs:complexType>
-	</xs:element>
+	<element name="servlet-mapping">
+	  <complexType>
+	    <sequence>
+	      <element ref="servlet-name"/>
+	      <element ref="url-pattern"/>
+	    </sequence>
+	  </complexType>
+	</element>
 
-	<xs:element name="web-app">
-	  <xs:attribute ref="id" use="required"/>
-	  <xs:attribute ref="version" use="required"/>
-	  <xs:complexType>
-		  <xs:element ref="display-name" maxOccurs="unbounded"/>
-	      <xs:element ref="welcome-file-list" maxOccurs="unbounded"/>
-	      <xs:element ref="filter" maxOccurs="unbounded"/>
-		  <xs:element ref="filter-mapping" maxOccurs="unbounded"/>
-		  <xs:element ref="listener" maxOccurs="unbounded"/>
-	      <xs:element ref="servlet" maxOccurs="unbounded"/>
-		  <xs:element ref="servlet-mapping" maxOccurs="unbounded"/>
-		  <xs:element ref="error-page" maxOccurs="unbounded"/>
-	  </xs:complexType>
-	</xs:element>
+	<element name="error-page">
+	  <complexType>
+	    <sequence>
+	      <element ref="error-code"/>
+	      <element ref="location"/>
+	    </sequence>
+	  </complexType>
+	</element>
 
-</xs:schema>
+	<element name="web-app">
+	  <attribute ref="id" use="required"/>
+	  <attribute ref="version" use="required"/>
+	  <complexType>
+		  <element ref="display-name" maxOccurs="unbounded"/>
+	      <element ref="welcome-file-list" maxOccurs="unbounded"/>
+	      <element ref="filter" maxOccurs="unbounded"/>
+		  <element ref="filter-mapping" maxOccurs="unbounded"/>
+		  <element ref="listener" maxOccurs="unbounded"/>
+	      <element ref="servlet" maxOccurs="unbounded"/>
+		  <element ref="servlet-mapping" maxOccurs="unbounded"/>
+		  <element ref="error-page" maxOccurs="unbounded"/>
+	  </complexType>
+	</element>
+
+</schema>
