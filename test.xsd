@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
-        targetNamespace="http://epam.by/XMLSchemaTest"
-        xmlns:tns="http://epam.by/XMLSchemaTest">
+        targetNamespace="http://epam.by/XMLSchemaTesting»
+        xmlns:tns="http://epam.by/XMLSchemaTesting»>
 
 	<!-- definition of simple elements -->
-	<element name="display-name" type=«tns:string"/>
-	<element name="welcome-file" type=«tns:string"/>
-	<element name="filter-name" type=«tns:string"/>
-	<element name="filter-class" type=«tns:string"/>
-	<element name="url-pattern" type=«tns:string"/>
-	<element name="dispather" type=«tns:string"/>
-	<element name="listener-class" type=«tns:string"/>
-	<element name="servlet-name" type=«tns:string"/>
-	<element name="servlet-class" type=«tns:string"/>
-	<element name="servlet-name" type=«tns:string"/>
-	<element name="error-code" type=«tns:positiveInteger"/>
-	<element name="location" type=«tns:string"/>
-	<element name=«param name» type=«tns:string»/>
-	<element name=«param value» type=«tns:string»/>
+	<element name="display-name" type=«string"/>
+	<element name="welcome-file" type=«string"/>
+	<element name="filter-name" type=«string"/>
+	<element name="filter-class" type=«string"/>
+	<element name="url-pattern" type=«string"/>
+	<element name="dispatсher" type=«string"/>
+	<element name="listener-class" type=«string"/>
+	<element name="servlet-name" type=«string"/>
+	<element name="servlet-class" type=«string"/>
+	<element name="servlet-name" type=«string"/>
+	<element name="error-code" type=«positiveInteger"/>
+	<element name="location" type=«string"/>
+	<element name="param name" type=«string»/>
+	<element name="param value" type=«string»/>
 
 	<!-- definition of attributes -->
 	<attribute name="id" type="string"/>
@@ -28,13 +28,22 @@
 	  <element ref="welcome-file"/>
 	</element>
 
+	<element name=«init-param»
+	 <complexType>
+	   <sequence>
+		<element ref=«param name»>
+		<element ref=«param value»>
+	   </sequence>
+	 </complexType>
+	</element>
+
 	<element name="filter">
 	  <complexType>
 
 	    <sequence>
 	     <element ref="filter-name"/>
 	     <element ref="filter-class"/>
-             <element ref="init-param" type=«tns:InitParam» minOccurs="0" maxOccurs="unbounded"/>
+             <element ref="init-param"/>
 	    </sequence>
 	  </complexType>
 	  
@@ -59,7 +68,7 @@
 	    <sequence>
 	     <element ref="servlet-name"/>
 	     <element ref="servlet-class"/>
-	     <element ref="init-param" type=«tns:InitParam» minOccurs="0" maxOccurs="unbounded"/>
+	     <element ref="init-param"/>
 
 	    </sequence>
 	  </complexType>
@@ -77,25 +86,36 @@
 
 	<element name="error-page">
 	  <complexType>
-	    <sequence>
+	    <choice>
 	      <element ref="error-code"/>
 	      <element ref="location"/>
-	    </sequence>
+	    </choice>
 	  </complexType>
 	</element>
 
+	<element name=«init-param»
+	 <complexType>
+	   <sequence>
+		<element ref=«param name»>
+		<element ref=«param value»>
+	   </sequence>
+	 </complexType>
+	</element>
+
 	<element name="web-app">
-	  <attribute ref="id" use="required"/>
-	  <attribute ref="version" use="required"/>
 	  <complexType>
-		  <element ref="display-name" maxOccurs="unbounded"/>
+	      <element ref=«init-param» maxOccurs="unbounded"/>	
+	      <element ref="display-name" maxOccurs="unbounded"/>
 	      <element ref="welcome-file-list" maxOccurs="unbounded"/>
 	      <element ref="filter" maxOccurs="unbounded"/>
-		  <element ref="filter-mapping" maxOccurs="unbounded"/>
-		  <element ref="listener" maxOccurs="unbounded"/>
+	      <element ref="filter-mapping" maxOccurs="unbounded"/>
+	      <element ref="listener" maxOccurs="unbounded"/>
 	      <element ref="servlet" maxOccurs="unbounded"/>
-		  <element ref="servlet-mapping" maxOccurs="unbounded"/>
-		  <element ref="error-page" maxOccurs="unbounded"/>
+	      <element ref="servlet-mapping" maxOccurs="unbounded"/>
+	      <element ref="error-page" maxOccurs="unbounded"/>
+	      
+	      <attribute ref="id" use="required"/>
+	      <attribute ref="version" use="required"/>
 	  </complexType>
 	</element>
 
