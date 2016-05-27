@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<menu xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="menu.xsd" >
+
+    <category id="1" type="cold snacks">
+
+        <food id="1">
+            <photo>url</photo>
+            <name>Ассорти рыбное</name>
+            <description>
+                Слабосоленая форель, семга
+            </description>
+            <price>10</price>
+            <gram>100/20/15</gram>
+        </food>
+
+        <food id="2">
+            <photo>url</photo>
+            <name>Бастурма</name>
+            <description>
+                Вяленая вырезка из говяжьего мяса
+            </description>
+            <price>7</price>
+            <gram>50/5</gram>
+        </food>
+
+        <food id="3">
+            <photo>url</photo>
+            <name>Соленья по-домашнему</name>
+            <description>
+                Маринованные овощи
+            </description>
+            <price>15</price>
+            <gram>150/10</gram>
+        </food>
+
+    </category>
+
+
+    <category id="2" type="hot appetizers">
+
+        <food id="4">
+            <photo>url</photo>
+            <name>Лобио с шампиньонами</name>
+            <description>
+                Фасоль с шампиньонами и грецким орехом
+            </description>
+            <price>105</price>
+            <gram>150/5</gram>
+        </food>
+
+        <food id="5">
+            <photo>url</photo>
+            <name>Ахтамар мясной</name>
+            <description>
+                Колбаса, ветчина, буженина, сыр, запеченные на мангале в лаваше
+            </description>
+            <price>165</price>
+            <gram>1 шт.</gram>
+        </food>
+
+        <food id="6">
+            <photo>url</photo>
+            <name>Ахтамар с овощами</name>
+            <description>
+                Сыр, помидоры, зелень, запеченные на мангале в лаваше
+            </description>
+            <price>150</price>
+            <gram>1 шт.</gram>
+        </food>
+
+    </category>
+
+
+    <category id="3" type="breakfast">
+
+        <food id="7">
+            <photo>url</photo>
+            <name>Омлет</name>
+            <description>d</description>
+            <price>15</price>
+            <gram>100</gram>
+        </food>
+
+
+        <food id="8">
+            <photo>url</photo>
+            <name>Блинчики с мясом</name>
+            <description>
+                Жареные блинчики с мясом
+            </description>
+            <price>20</price>
+            <gram>150</gram>
+        </food>
+
+
+        <food id="9">
+            <photo>url</photo>
+            <name>Глазунья</name>
+            <description>
+                2 яйца (на выбор: ветчина, сыр, помидоры)
+            </description>
+            <price>10</price>
+            <gram>150</gram>
+        </food>
+
+    </category>
+</menu>
