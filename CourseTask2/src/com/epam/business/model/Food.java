@@ -72,4 +72,32 @@ public class Food {
                 ", gram='" + gram + '\'' +
                 '}';
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Food food = (Food) o;
+
+        if (id != food.id) return false;
+        if (price != food.price) return false;
+        if (photo != null ? !photo.equals(food.photo) : food.photo != null) return false;
+        if (name != null ? !name.equals(food.name) : food.name != null) return false;
+        if (description != null ? !description.equals(food.description) : food.description != null) return false;
+        return gram != null ? gram.equals(food.gram) : food.gram == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (photo != null ? photo.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + price;
+        result = 31 * result + (gram != null ? gram.hashCode() : 0);
+        return result;
+    }
 }

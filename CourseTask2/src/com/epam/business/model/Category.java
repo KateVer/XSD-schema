@@ -43,4 +43,26 @@ public class Category {
                 ", food=" + food +
                 '}';
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Category category = (Category) o;
+
+        if (id != category.id) return false;
+        if (type != null ? !type.equals(category.type) : category.type != null) return false;
+        return food != null ? food.equals(category.food) : category.food == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (food != null ? food.hashCode() : 0);
+        return result;
+    }
 }

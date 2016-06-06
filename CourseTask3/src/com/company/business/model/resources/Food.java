@@ -52,11 +52,52 @@ public class Food {
         this.gram = gram;
     }
 
+
     public String getPrice() {
         return price;
     }
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Food{" +
+                "id=" + id +
+                ", photo='" + photo + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", gram='" + gram + '\'' +
+                ", price='" + price + '\'' +
+                '}';
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Food food = (Food) o;
+
+        if (id != food.id) return false;
+        if (photo != null ? !photo.equals(food.photo) : food.photo != null) return false;
+        if (name != null ? !name.equals(food.name) : food.name != null) return false;
+        if (description != null ? !description.equals(food.description) : food.description != null) return false;
+        if (gram != null ? !gram.equals(food.gram) : food.gram != null) return false;
+        return price != null ? price.equals(food.price) : food.price == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (photo != null ? photo.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (gram != null ? gram.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        return result;
     }
 }

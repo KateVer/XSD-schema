@@ -17,6 +17,9 @@ import java.util.List;
 /**
  * Created by kateverbitskaya on 23.05.16.
  */
+
+// Task 1
+
 public class Main2 {
 
     public static void main(String[] args) {

@@ -34,7 +34,8 @@ public class SaxDemo {
         List<Food> menu = handler.getFoodList();
 
         for (Food food : menu) {
-            System.out.println(food.getName());
+            System.out.println(food.toString());
+
         }
 
     }
