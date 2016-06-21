@@ -1,8 +1,8 @@
 package com.company.business.dao.impl;
 
-import com.company.business.dao.IUserDAO;
+import com.company.business.dao.IMakerDAO;
 import com.company.business.db.pool.DBConnectionPool;
-import com.company.business.model.User;
+import com.company.business.model.Maker;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,31 +12,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by kateverbitskaya on 20.06.16.
+ * Created by kateverbitskaya on 21.06.16.
  */
-public class UserDAOImpl implements IUserDAO {
+public class MakerDAOImpl implements IMakerDAO {
 
     DBConnectionPool dbConnectionPool = DBConnectionPool.getInstance();
 
-    @Override
-    public User getUserById(int userId) {
-        return null;
-    }
+
 
     @Override
-    public List<User> getAllUser() {
+    public List<Maker> getAllMaker() {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        List<User>  userList = new ArrayList<User>();
+        List<Maker> makerList = new ArrayList<>();
 
 
         try {
             connection = dbConnectionPool.getConnection();
-            preparedStatement = connection.prepareStatement(SQLStatements.GET_ALL_USERS);
+            preparedStatement = connection.prepareStatement(SQLStatements.GET_ALL_MAKERS);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                userList.add(parseRSElementToUser(resultSet));
+                makerList.add(parseRSElementToMaker(resultSet));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -44,26 +41,23 @@ public class UserDAOImpl implements IUserDAO {
             dbConnectionPool.closeConnection(connection);
         }
 
-        return userList;
+        return makerList;
     }
 
-    private User parseRSElementToUser(ResultSet rs){
-        User user = new User();
+    private Maker parseRSElementToMaker(ResultSet rs){
+        Maker maker = new Maker();
         try {
-            user.setUserId(rs.getInt("User_id"));
-            user.setName(rs.getString("name"));
-            user.setHashPass(rs.getLong("hash(pass)"));
-            user.setAdminYN(rs.getString("adminY_N"));
+            maker.setMakerId(rs.getInt("Maker_id"));
+            maker.setCountry(rs.getString("Country"));
+            maker.setCompany(rs.getString("Company"));
+            maker.setContacts(rs.getString("Contacts"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return user;
+        return maker;
     }
 
-    @Override
-    public void create(User user) {
 
-    }
 
 
 

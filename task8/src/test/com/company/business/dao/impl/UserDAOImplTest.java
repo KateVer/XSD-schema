@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by kateverbitskaya on 21.06.16.
  */
-public class UserDAOTest {
+public class UserDAOImplTest {
 
     @Test
     public void getAllUser(){

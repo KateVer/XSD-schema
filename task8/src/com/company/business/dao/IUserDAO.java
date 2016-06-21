@@ -1,4 +1,4 @@
-package com.company.business.dao.api;
+package com.company.business.dao;
 
 import com.company.business.model.User;
 
