@@ -54,6 +54,8 @@ public class UserDAOImpl implements IUserDAO {
             user.setName(rs.getString("name"));
             user.setHashPass(rs.getLong("hash(pass)"));
             user.setAdminYN(rs.getString("adminY_N"));
+            user.setPhone(rs.getString("phone"));
+            user.setEmail(rs.getString("email"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
