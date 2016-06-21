@@ -16,7 +16,7 @@ public class UserDAOImplTest {
     public void getAllUser(){
         UserDAOImpl userDAOImpl = new UserDAOImpl();
         List<User> users = userDAOImpl.getAllUser();
-        Assert.assertNotNull(users);
+
         Assert.assertTrue(users.size() > 0);
     }
 
