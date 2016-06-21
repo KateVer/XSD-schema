@@ -1,7 +1,10 @@
 package com.company.business.dao.impl;
 
+import com.company.business.common.EntityConstant;
+import com.company.business.dao.DAOException;
+import com.company.business.dao.DBConnectionPoolException;
 import com.company.business.dao.IUserDAO;
-import com.company.business.db.pool.DBConnectionPool;
+import com.company.business.dao.DBConnectionPool;
 import com.company.business.model.User;
 
 import java.sql.Connection;
@@ -16,7 +19,7 @@ import java.util.List;
  */
 public class UserDAOImpl implements IUserDAO {
 
-    DBConnectionPool dbConnectionPool = DBConnectionPool.getInstance();
+    private DBConnectionPool dbConnectionPool = DBConnectionPool.getInstance();
 
     @Override
     public User getUserById(int userId) {
@@ -24,7 +27,7 @@ public class UserDAOImpl implements IUserDAO {
     }
 
     @Override
-    public List<User> getAllUser() {
+    public List<User> getAllUser() throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -33,39 +36,38 @@ public class UserDAOImpl implements IUserDAO {
 
         try {
             connection = dbConnectionPool.getConnection();
-            preparedStatement = connection.prepareStatement(SQLStatements.GET_ALL_USERS);
+            preparedStatement = connection.prepareStatement(SQLStatement.GET_ALL_USERS);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 userList.add(parseRSElementToUser(resultSet));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
+        } catch (SQLException e) {
+            throw new DAOException("SQLException: Wrong Sql statement or could not execute query", e);
+        }
+        catch (DBConnectionPoolException e) {
+            throw new DAOException("DBConnectionPoolException: exception in pool", e);
+        }
+        finally{
             dbConnectionPool.closeConnection(connection);
         }
 
         return userList;
     }
 
-    private User parseRSElementToUser(ResultSet rs){
+    private User parseRSElementToUser(ResultSet rs) throws DAOException {
         User user = new User();
         try {
-            user.setUserId(rs.getInt("User_id"));
-            user.setName(rs.getString("name"));
-            user.setHashPass(rs.getLong("hash(pass)"));
-            user.setAdminYN(rs.getString("adminY_N"));
-            user.setPhone(rs.getString("phone"));
-            user.setEmail(rs.getString("email"));
+            user.setUserId(rs.getInt(EntityConstant.USER_ID));
+            user.setName(rs.getString(EntityConstant.NAME));
+            user.setAdminYN(rs.getString(EntityConstant.ADMIN_YN));
+            user.setPhone(rs.getString(EntityConstant.PHONE));
+            user.setEmail(rs.getString(EntityConstant.EMAIL));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("SQLException: could not get data from resul", e);
         }
         return user;
     }
 
-    @Override
-    public void create(User user) {
-
-    }
 
 
 

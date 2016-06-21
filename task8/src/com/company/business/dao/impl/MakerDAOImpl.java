@@ -1,7 +1,10 @@
 package com.company.business.dao.impl;
 
+import com.company.business.common.EntityConstant;
+import com.company.business.dao.DAOException;
+import com.company.business.dao.DBConnectionPoolException;
 import com.company.business.dao.IMakerDAO;
-import com.company.business.db.pool.DBConnectionPool;
+import com.company.business.dao.DBConnectionPool;
 import com.company.business.model.Maker;
 
 import java.sql.Connection;
@@ -16,12 +19,12 @@ import java.util.List;
  */
 public class MakerDAOImpl implements IMakerDAO {
 
-    DBConnectionPool dbConnectionPool = DBConnectionPool.getInstance();
+   private DBConnectionPool dbConnectionPool = DBConnectionPool.getInstance();
 
 
 
     @Override
-    public List<Maker> getAllMaker() {
+    public List<Maker> getAllMaker() throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -30,29 +33,33 @@ public class MakerDAOImpl implements IMakerDAO {
 
         try {
             connection = dbConnectionPool.getConnection();
-            preparedStatement = connection.prepareStatement(SQLStatements.GET_ALL_MAKERS);
+            preparedStatement = connection.prepareStatement(SQLStatement.GET_ALL_MAKERS);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 makerList.add(parseRSElementToMaker(resultSet));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
+        } catch (SQLException e) {
+            throw new DAOException("SQLException: Wrong Sql statement or could not execute query", e);
+        }
+        catch (DBConnectionPoolException e) {
+            throw new DAOException("DBConnectionPoolException: exception in pool", e);
+        }
+        finally{
             dbConnectionPool.closeConnection(connection);
         }
 
         return makerList;
     }
 
-    private Maker parseRSElementToMaker(ResultSet rs){
+    private Maker parseRSElementToMaker(ResultSet rs) throws DAOException{
         Maker maker = new Maker();
         try {
-            maker.setMakerId(rs.getInt("Maker_id"));
-            maker.setCountry(rs.getString("Country"));
-            maker.setCompany(rs.getString("Company"));
-            maker.setContacts(rs.getString("Contacts"));
+            maker.setMakerId(rs.getInt(EntityConstant.MAKER_ID));
+            maker.setCountry(rs.getString(EntityConstant.COUNTRY));
+            maker.setCompany(rs.getString(EntityConstant.COMPANY));
+            maker.setContacts(rs.getString(EntityConstant.CONTACTS));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("SQLException: could not get data from resul", e);
         }
         return maker;
     }

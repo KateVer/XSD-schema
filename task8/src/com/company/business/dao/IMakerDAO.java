@@ -8,5 +8,5 @@ import java.util.List;
  * Created by kateverbitskaya on 21.06.16.
  */
 public interface IMakerDAO {
-    public List<Maker> getAllMaker();
+    public List<Maker> getAllMaker() throws DAOException;
 }

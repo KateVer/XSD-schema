@@ -1,5 +1,6 @@
 package test.com.company.business.dao.impl;
 
+import com.company.business.dao.DAOException;
 import com.company.business.dao.impl.MakerDAOImpl;
 import com.company.business.model.Maker;
 import org.junit.Assert;
@@ -15,7 +16,12 @@ public class MakerDAOImplTest {
     @Test
     public void getAllMaker(){
         MakerDAOImpl makerDAOImpl = new MakerDAOImpl();
-        List<Maker> makers = makerDAOImpl.getAllMaker();
+        List<Maker> makers = null;
+        try {
+            makers = makerDAOImpl.getAllMaker();
+        } catch (DAOException e) {
+            System.out.println("Could not get All users, the log below:" + e);
+        }
         Assert.assertNotNull(makers);
 
     }

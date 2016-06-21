@@ -10,7 +10,6 @@ import java.util.List;
 public interface IUserDAO {
 
     public User getUserById(int userId);
-    public List<User> getAllUser();
-    public void create(User user);
+    public List<User> getAllUser() throws DAOException;
 
 }
