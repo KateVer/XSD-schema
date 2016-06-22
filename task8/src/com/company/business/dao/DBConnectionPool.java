@@ -1,14 +1,11 @@
 package com.company.business.dao;
 
+import javax.sql.PooledConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Created by kateverbitskaya on 21.06.16.
@@ -17,17 +14,19 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class DBConnectionPool {
 
     private final int count = 10;
-    private ReadWriteLock rwl = new ReentrantReadWriteLock();
-    private Lock writeLock = rwl.writeLock();
 
-    private Map<Connection, Boolean> connections = new HashMap<Connection, Boolean>();
-
+    private BlockingQueue<Connection> freeConnectionQueue = new ArrayBlockingQueue<Connection>(count);
+    private BlockingQueue<Connection> busyConnectionQueue = new ArrayBlockingQueue<Connection>(count);
     private static DBConnectionPool dbConnectionPool = new DBConnectionPool( );
+
+
 
     /* A private Constructor prevents any other
      * class from instantiating.
      */
-    private DBConnectionPool(){ }
+    private DBConnectionPool() {
+
+    }
 
     /* Static 'instance' method */
     public static DBConnectionPool getInstance( ) {
@@ -52,36 +51,61 @@ public class DBConnectionPool {
     }
 
     public Connection getConnection() throws DBConnectionPoolException {
-        try{
-            if(connections.isEmpty()){
-                for(int i = 0; i < count; i++){
+
+        Connection connection = null;
+        int conCount = freeConnectionQueue.size() + busyConnectionQueue.size();
+        try {
+            if (conCount == 0) {
+                for (int i = 0; i < count; i++) {
                     Connection con = null;
-                        con = createConnection();
-                    connections.put(con, true);
+                    con = createConnection();
+                    freeConnectionQueue.add(con);
                 }
             }
         } catch (DBConnectionPoolException e) {
-            throw new DBConnectionPoolException("Could not create Connection", e);
-        }
-        Connection connection = null;
-        writeLock.lock();
-
-        for (Connection con: connections.keySet()) {
-            if (connections.get(con)){
-                connection = con;
-                connections.put(con, false);
-                break;
-            }
+            throw new DBConnectionPoolException("DBConnectionPoolException Could not create DBConnectionPool instance", e);
         }
 
-        writeLock.unlock();
+        try {
+            connection = freeConnectionQueue.take();
+            busyConnectionQueue.add(connection);
+        } catch (InterruptedException e) {
+            throw new DBConnectionPoolException("InterruptedException Error connecting to the data source", e);
+        }
 
         return connection;
     }
 
-    public void closeConnection(Connection con){
-        connections.put(con, true);
+    public void makeFreeConnection(Connection connection){
+        busyConnectionQueue.remove(connection);
+        freeConnectionQueue.add(connection);
     }
 
+    public void closePoolConnection() throws DBConnectionPoolException {
+        try {
+            closeQueueConnection(freeConnectionQueue);
+            closeQueueConnection(busyConnectionQueue);
+        } catch (SQLException e) {
+            throw new DBConnectionPoolException("SQLException Could not close connections", e);
+        }
+    }
+
+    public void closeQueueConnection(BlockingQueue<Connection> connectionQueue) throws SQLException, DBConnectionPoolException {
+        Connection connection;
+        while ((connection = connectionQueue.poll()) != null){
+            if (!connection.getAutoCommit()){
+                connection.commit();
+            }
+            closeConnection(connection);
+        }
+    }
+
+    public void closeConnection(Connection connection) throws DBConnectionPoolException {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new DBConnectionPoolException("SQLException Could not close connection", e);
+        }
+    }
 
 }

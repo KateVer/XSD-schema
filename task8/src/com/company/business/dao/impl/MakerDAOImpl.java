@@ -45,7 +45,7 @@ public class MakerDAOImpl implements IMakerDAO {
             throw new DAOException("DBConnectionPoolException: exception in pool", e);
         }
         finally{
-            dbConnectionPool.closeConnection(connection);
+            dbConnectionPool.makeFreeConnection(connection);
         }
 
         return makerList;
